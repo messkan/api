@@ -81,7 +81,7 @@ class IsolateJob < ApplicationJob
 
     File.open(additional_files_archive_file, "wb") { |f| f.write(submission.additional_files) }
 
-    command = "isolate #{cgroups} \
+    command = "isolate --share-net #{cgroups} \
     -s \
     -b #{box_id} \
     --stderr-to-stdout \
