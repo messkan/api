@@ -198,7 +198,8 @@ class IsolateJob < ApplicationJob
       command_line_arguments = submission.command_line_arguments.to_s.strip.encode("UTF-8", invalid: :replace).gsub(/[$&;<>|`]/, "")
       File.open(run_script, "w") { |f| f.write("#{submission.language.run_cmd} #{command_line_arguments}")}
     end
-
+    
+    
     command = "isolate --share-net #{cgroups} \
     -s \
     -b #{box_id} \
@@ -206,7 +207,7 @@ class IsolateJob < ApplicationJob
     #{submission.redirect_stderr_to_stdout ? "--stderr-to-stdout" : ""} \
     -t #{submission.cpu_time_limit} \
     -x #{submission.cpu_extra_time} \
-    -w #{submission.wall_time_limit} \
+    -w 120 \
     -k #{submission.stack_limit} \
     -p#{submission.max_processes_and_or_threads} \
     #{submission.enable_per_process_and_thread_time_limit ? (cgroups.present? ? "--no-cg-timing" : "") : "--cg-timing"} \
