@@ -13,6 +13,7 @@ class IsolateJob < ApplicationJob
               :stderr_file, :metadata_file, :additional_files_archive_file
 
   def perform(submission)
+    
     @submission = submission
 
     time = []
@@ -77,10 +78,11 @@ class IsolateJob < ApplicationJob
   end
 
   def extract_archive
+     
     return unless submission.additional_files?
-
+    
     File.open(additional_files_archive_file, "wb") { |f| f.write(submission.additional_files) }
-
+    
     command = "isolate --share-net #{cgroups} \
     -s \
     -b #{box_id} \
@@ -197,7 +199,7 @@ class IsolateJob < ApplicationJob
       File.open(run_script, "w") { |f| f.write("#{submission.language.run_cmd} #{command_line_arguments}")}
     end
 
-    command = "isolate #{cgroups} \
+    command = "isolate --share-net #{cgroups} \
     -s \
     -b #{box_id} \
     -M #{metadata_file} \

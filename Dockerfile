@@ -3,11 +3,6 @@ FROM judge0/api-base:1.3.0 AS production
 ENV JUDGE0_HOMEPAGE "https://judge0.com"
 LABEL homepage=$JUDGE0_HOMEPAGE
 
-ENV JUDGE0_SOURCE_CODE "https://github.com/judge0/api"
-LABEL source_code=$JUDGE0_SOURCE_CODE
-
-ENV JUDGE0_MAINTAINER "Herman Zvonimir Došilović <hermanz.dosilovic@gmail.com>"
-LABEL maintainer=$JUDGE0_MAINTAINER
 
 ENV PATH "/usr/local/ruby-2.7.0/bin:/opt/.gem/bin:$PATH"
 ENV GEM_HOME "/opt/.gem/"
@@ -28,7 +23,7 @@ EXPOSE $VIRTUAL_PORT
 WORKDIR /api
 
 COPY Gemfile* ./
-RUN RAILS_ENV=production bundle
+RUN RAILS_ENV=development 
 
 COPY cron /etc/cron.d
 RUN cat /etc/cron.d/* | crontab -
